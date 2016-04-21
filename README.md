@@ -3,6 +3,8 @@ A2 Printer
 
 A small library for working with cheap thermal "A2" printers, such as those available from Adafruit and Sparkfun.
 
+See the [user manual](https://cdn-shop.adafruit.com/datasheets/A2-user+manual.pdf) for more technical details.
+
 Simple example
 ------
 
