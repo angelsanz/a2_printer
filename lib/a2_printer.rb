@@ -8,16 +8,10 @@ class A2Printer
 
   def begin(heat_time=150)
     reset()
+    set_heat_settings(heat_time)
 
-    heat_interval = 50 # 2 is default from page 23 of datasheet. Controls speed of printing and darkness
     print_density = 15 # Not sure what the default is. Testing shows the max helps darken text. From page 23.
     print_break_time = 15 # Not sure what the default is. Testing shows the max helps darken text. From page 23.
-
-    write_bytes(27, 55)
-    write_bytes(7) # Default 64 dots = 8*('7'+1)
-    write_bytes(heat_time) # Default 80 or 800us
-    write_bytes(heat_interval) # Default 2 or 20us
-
     # Modify the print density and timeout
     write_bytes(18, 35)
     print_setting = (print_density<<4) | print_break_time
@@ -317,6 +311,16 @@ class A2Printer
   end
 
   private
+
+  def set_heat_settings(heat_time)
+    maximum_heating_dots = 7
+    heat_interval = 50
+
+    write_bytes(27, 55)
+    write_bytes(maximum_heating_dots)
+    write_bytes(heat_time)
+    write_bytes(heat_interval)
+  end
 
   def write(c)
     return if (c == 0x13)
