@@ -25,10 +25,7 @@ class A2Printer
     set_barcode_height(50)
   end
 
-  # Feeds by the specified number of lines
   def feed(lines=1)
-    # The datasheet claims sending bytes 27, 100, <x> will work
-    # but it feeds much much more.
     lines.times { write(10) }
   end
 
