@@ -24,7 +24,6 @@ class A2Printer
     write_bytes(print_setting) # Combination of print_density and print_break_time
   end
 
-  # reset printer
   def reset
     write_bytes(27, 64)
   end
