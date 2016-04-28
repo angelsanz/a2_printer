@@ -71,15 +71,6 @@ class A2Printer
     print(string + "\n")
   end
 
-  def write(c)
-    return if (c == 0x13)
-    write_bytes(c)
-  end
-
-  def write_bytes(*bytes)
-    bytes.each { |b| @connection.putc(b) }
-  end
-
   # Character commands
 
   INVERSE_MASK = (1 << 1)
@@ -328,5 +319,16 @@ class A2Printer
 
   def set_line_height(val=32)
     write_bytes(27, 51, val) # default is 32
+  end
+
+  private
+
+  def write(c)
+    return if (c == 0x13)
+    write_bytes(c)
+  end
+
+  def write_bytes(*bytes)
+    bytes.each { |b| @connection.putc(b) }
   end
 end
