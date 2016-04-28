@@ -68,7 +68,7 @@ describe A2Printer do
       @printer.expects(:normal)
       @printer.expects(:underline_off)
       @printer.expects(:set_line_height).with(32)
-      @printer.set_default
+      @printer.set_default_formatting
     end
   end
 

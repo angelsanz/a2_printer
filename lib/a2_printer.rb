@@ -16,8 +16,7 @@ class A2Printer
     write_bytes(27, 64)
   end
 
-  # reset formatting
-  def set_default
+  def set_default_formatting
     online
     normal
     underline_off
