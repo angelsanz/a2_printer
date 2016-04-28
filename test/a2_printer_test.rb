@@ -17,7 +17,7 @@ describe A2Printer do
   end
 
   it "prints a test page" do
-    @printer.test_page
+    @printer.print_test_page
     sent_bytes.must_equal [18, 84]
   end
 

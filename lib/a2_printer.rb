@@ -6,10 +6,6 @@ class A2Printer
     @print_mode = 0
   end
 
-  def test_page
-    write_bytes(18, 84)
-  end
-
   def begin(heat_time=150)
     reset()
 
@@ -59,7 +55,7 @@ class A2Printer
     write_bytes(12)
   end
 
-  def test_page
+  def print_test_page
     write_bytes(18, 84)
   end
 
