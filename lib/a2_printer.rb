@@ -7,9 +7,9 @@ class A2Printer
   end
 
   def begin(heat_time=150)
-    reset()
+    reset
     set_heat_settings(heat_time)
-    set_printing_settings()
+    set_printing_settings
   end
 
   def reset
