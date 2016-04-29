@@ -1,5 +1,6 @@
 require "serial_connection"
 
+
 class A2Printer
   def initialize(connection)
     @connection = connection
@@ -46,8 +47,8 @@ class A2Printer
     string.each_byte { |byte| write(byte) }
   end
 
-  def println(string)
-    print(string + "\n")
+  def print_line(string)
+    print(string + NEWLINE_CHARACTER)
   end
 
   # Character commands
@@ -328,4 +329,6 @@ class A2Printer
   def write_bytes(*bytes)
     bytes.each { |b| @connection.putc(b) }
   end
+
+  NEWLINE_CHARACTER = "\n"
 end

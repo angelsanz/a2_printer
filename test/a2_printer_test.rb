@@ -78,8 +78,8 @@ describe A2Printer do
       sent_bytes.must_equal %w(h e l l o).map(&:ord)
     end
 
-    it "sends a newline character when printing with println" do
-      @printer.println("hello")
+    it "can send a newline character" do
+      @printer.print_line("hello")
       sent_bytes.must_equal %w(h e l l o).map(&:ord) + [10]
     end
   end
