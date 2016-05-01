@@ -171,7 +171,7 @@ class A2Printer
 
   def print_bitmap(*args)
     bitmap = Bitmap.new(*args)
-    return if (bitmap.width > 384) # maximum width of the printer
+    return if (bitmap.width > MAXIMUM_DOTS_PER_LINE)
     bitmap.each_block do |w, h, bytes|
       write_bytes(18, 42)
       write_bytes(h, w)
@@ -288,4 +288,5 @@ class A2Printer
   end
 
   NEWLINE_CHARACTER = "\n"
+  MAXIMUM_DOTS_PER_LINE = 384
 end
