@@ -23,6 +23,15 @@ class Bitmap
     end
   end
 
+  def to_bytes
+    bytes = []
+    each_block do |width, height, block|
+      bytes = bytes + [18, 42, height, width] + block
+    end
+
+    bytes
+  end
+
 
   private
 

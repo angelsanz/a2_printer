@@ -172,11 +172,7 @@ class A2Printer
   def print_bitmap(*args)
     bitmap = Bitmap.new(*args)
     return if (bitmap.width > MAXIMUM_DOTS_PER_LINE)
-    bitmap.each_block do |w, h, bytes|
-      write_bytes(18, 42)
-      write_bytes(h, w)
-      write_bytes(*bytes)
-    end
+    write_bytes(*bitmap.to_bytes)
   end
 
   # def print_bitmap(stream)
