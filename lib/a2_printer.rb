@@ -205,10 +205,9 @@ class A2Printer
     write_bytes(0)
   end
 
-  # Take the printer back online. Subsequent print commands will be
-  # obeyed.
   def online
-    write_bytes(27, 61, 1)
+    write_status_header
+    write_bytes(1)
   end
 
   # Put the printer into a low-energy state immediately
