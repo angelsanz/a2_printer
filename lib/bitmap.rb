@@ -3,25 +3,47 @@ class Bitmap
 
   class << self
     def from_source(source)
-      new(source)
+      data = obtain_data(source)
+      width = read_width(data)
+      height = read_height(data)
+
+      Bitmap.with_dimensions(width, height, data)
     end
 
     def with_dimensions(width, height, source)
-      new(width, height, source)
+      new(width, height, obtain_data(source))
+    end
+
+    private
+
+    def obtain_data(source)
+      if source.respond_to?(:getbyte)
+        source
+      else
+        StringIO.new(source.map(&:chr).join)
+      end
+    end
+
+    def read_width(data)
+      read_two_bytes(data)
+    end
+
+    def read_height(data)
+      read_two_bytes(data)
+    end
+
+    def read_two_bytes(data)
+      first_byte = data.getbyte
+      (data.getbyte << 8) + first_byte
     end
 
     private :new
   end
 
-  def initialize(width_or_source, height=nil, source=nil)
-    if height.nil? && source.nil?
-      set_source(width_or_source)
-      extract_width_and_height_from_data
-    else
-      set_source(source)
-      @width = width_or_source
+  def initialize(width, height, data)
+      @data = data
+      @width = width
       @height = height
-    end
   end
 
   def to_bytes
@@ -35,21 +57,6 @@ class Bitmap
 
 
   private
-
-  def set_source(source)
-    if source.respond_to?(:getbyte)
-      @data = source
-    else
-      @data = StringIO.new(source.map(&:chr).join)
-    end
-  end
-
-  def extract_width_and_height_from_data
-    tmp = @data.getbyte
-    @width = (@data.getbyte << 8) + tmp
-    tmp = @data.getbyte
-    @height = (@data.getbyte << 8) + tmp
-  end
 
   def each_block
     row_start = 0
