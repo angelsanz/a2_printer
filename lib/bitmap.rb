@@ -1,6 +1,18 @@
 class Bitmap
   attr_reader :width, :height
 
+  class << self
+    def from_source(source)
+      new(source)
+    end
+
+    def with_dimensions(width, height, source)
+      new(width, height, source)
+    end
+
+    private :new
+  end
+
   def initialize(width_or_source, height=nil, source=nil)
     if height.nil? && source.nil?
       set_source(width_or_source)

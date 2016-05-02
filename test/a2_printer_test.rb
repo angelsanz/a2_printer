@@ -171,7 +171,7 @@ describe A2Printer do
     describe "where width and height aren't given" do
       before do
         data = StringIO.new(([8,0,8,0] + [3]*8).map(&:chr).join)
-        @printer.print_bitmap(data)
+        @printer.print_bitmap_from_source(data)
       end
 
       it "writes the prefix" do

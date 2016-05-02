@@ -169,10 +169,12 @@ class A2Printer
   end
 
 
-  def print_bitmap(*args)
-    bitmap = Bitmap.new(*args)
-    return if (bitmap.width > MAXIMUM_DOTS_PER_LINE)
-    write_bytes(*bitmap.to_bytes)
+  def print_bitmap(width, height, source)
+    do_print_bitmap(Bitmap.with_dimensions(width, height, source))
+  end
+
+  def print_bitmap_from_source(source)
+    do_print_bitmap(Bitmap.from_source(source))
   end
 
   # Barcodes
@@ -273,6 +275,11 @@ class A2Printer
 
   def write_bytes(*bytes)
     bytes.each { |b| @connection.putc(b) }
+  end
+
+  def do_print_bitmap bitmap
+    return if (bitmap.width > MAXIMUM_DOTS_PER_LINE)
+    write_bytes(*bitmap.to_bytes)
   end
 
   NEWLINE_CHARACTER = "\n"
