@@ -200,10 +200,9 @@ class A2Printer
     write(0) # Terminator
   end
 
-  # Take the printer offline. Print commands sent after this will be
-  # ignored until `online` is called
   def offline
-    write_bytes(27, 61, 0)
+    write_status_header
+    write_bytes(0)
   end
 
   # Take the printer back online. Subsequent print commands will be
@@ -262,6 +261,10 @@ class A2Printer
 
     write_bytes(18, 35)
     write_bytes((density << 4) | break_time)
+  end
+
+  def write_status_header
+    write_bytes(27, 61)
   end
 
   def write(c)
