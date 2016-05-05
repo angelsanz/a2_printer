@@ -3,38 +3,13 @@ class Bitmap
 
   class << self
     def from_source(source)
-      data = obtain_data(source)
-      width = read_width(data)
-      height = read_height(data)
+      data = DimensionedBitmapData.new(source)
 
-      Bitmap.with_dimensions(width, height, data)
+      Bitmap.with_dimensions(data.width, data.height, data)
     end
 
     def with_dimensions(width, height, source)
-      new(width, height, obtain_data(source))
-    end
-
-    private
-
-    def obtain_data(source)
-      if source.respond_to?(:getbyte)
-        source
-      else
-        StringIO.new(source.map(&:chr).join)
-      end
-    end
-
-    def read_width(data)
-      read_two_bytes(data)
-    end
-
-    def read_height(data)
-      read_two_bytes(data)
-    end
-
-    def read_two_bytes(data)
-      first_byte = data.getbyte
-      (data.getbyte << 8) + first_byte
+      new(width, height, BitmapData.new(source))
     end
 
     private :new
@@ -69,3 +44,41 @@ class Bitmap
     end
   end
 end
+
+class BitmapData
+  def initialize(source)
+    @source = ensure_is_queryable_for_bytes(source)
+  end
+
+  def getbyte
+    @source.getbyte
+  end
+
+  private
+
+  def ensure_is_queryable_for_bytes(source)
+    if source.respond_to?(:getbyte)
+      source
+    else
+      StringIO.new(source.map(&:chr).join)
+    end
+  end
+end
+
+class DimensionedBitmapData < BitmapData
+  attr_reader :width, :height
+
+  def initialize(source)
+    super(source)
+    @width = read_two_bytes
+    @height = read_two_bytes
+  end
+
+  private
+
+  def read_two_bytes
+    first_byte = getbyte
+    (getbyte << 8) + first_byte
+  end
+end
+
