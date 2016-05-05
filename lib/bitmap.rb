@@ -57,11 +57,8 @@ class BitmapData
   private
 
   def ensure_is_queryable_for_bytes(source)
-    if source.respond_to?(:getbyte)
-      source
-    else
-      StringIO.new(source.map(&:chr).join)
-    end
+    return source if source.respond_to?(:getbyte)
+    StringIO.new(source.map(&:chr).join)
   end
 end
 
