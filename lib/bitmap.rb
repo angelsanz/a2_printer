@@ -4,8 +4,7 @@ class Bitmap
   class << self
     def from_source(source)
       data = DimensionedBitmapData.new(source)
-
-      Bitmap.with_dimensions(data.width, data.height, data)
+      new(data.width, data.height, data)
     end
 
     def with_dimensions(width, height, source)
@@ -38,8 +37,7 @@ class Bitmap
     width_in_bytes = width / 8
     while row_start < height do
       chunk_height = [height - row_start, 255].min
-      bytes = (0...(width_in_bytes * chunk_height)).map { @data.getbyte }
-      yield chunk_height, width_in_bytes, bytes
+      yield chunk_height, width_in_bytes, @data.get_bytes(width_in_bytes * chunk_height)
       row_start += 255
     end
   end
@@ -50,8 +48,8 @@ class BitmapData
     @source = ensure_is_queryable_for_bytes(source)
   end
 
-  def getbyte
-    @source.getbyte
+  def get_bytes(amount)
+    (0...amount).map { @source.getbyte }
   end
 
   private
@@ -74,8 +72,8 @@ class DimensionedBitmapData < BitmapData
   private
 
   def read_two_bytes
-    first_byte = getbyte
-    (getbyte << 8) + first_byte
+    first_byte = @source.getbyte
+    (@source.getbyte << 8) + first_byte
   end
 end
 
