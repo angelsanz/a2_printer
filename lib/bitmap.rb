@@ -22,8 +22,8 @@ class Bitmap
 
   def to_bytes
     bytes = []
-    each_block do |height, width, block|
-      bytes += [18, 42, height, width] + block
+    each_chunk do |height, width, chunk|
+      bytes += [18, 42, height, width] + chunk
     end
 
     bytes
@@ -32,13 +32,13 @@ class Bitmap
 
   private
 
-  def each_block
+  def each_chunk
     width_in_bytes = width / 8
-    number_of_blocks = (height / 255) + 1
+    number_of_chunks = (height / 255) + 1
 
-    number_of_blocks.times do |block_number|
-      block_height_offset = block_number * 255
-      chunk_height = [height - block_height_offset, 255].min
+    number_of_chunks.times do |chunk_number|
+      chunk_height_offset = chunk_number * 255
+      chunk_height = [height - chunk_height_offset, 255].min
       yield chunk_height, width_in_bytes, @data.get_bytes(width_in_bytes * chunk_height)
     end
   end
