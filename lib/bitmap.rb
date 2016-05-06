@@ -49,7 +49,7 @@ class BitmapData
   end
 
   def get_bytes(amount)
-    (0...amount).map { @source.getbyte }
+    (1..amount).map { @source.getbyte }
   end
 
   private
