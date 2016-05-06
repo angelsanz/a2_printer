@@ -33,12 +33,13 @@ class Bitmap
   private
 
   def each_block
-    row_start = 0
     width_in_bytes = width / 8
-    while row_start < height do
-      chunk_height = [height - row_start, 255].min
+    number_of_blocks = (height / 255) + 1
+
+    number_of_blocks.times do |block_number|
+      block_height_offset = block_number * 255
+      chunk_height = [height - block_height_offset, 255].min
       yield chunk_height, width_in_bytes, @data.get_bytes(width_in_bytes * chunk_height)
-      row_start += 255
     end
   end
 end
