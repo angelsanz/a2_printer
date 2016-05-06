@@ -23,7 +23,7 @@ class Bitmap
   def to_bytes
     bytes = []
     each_block do |height, width, block|
-      bytes = bytes + [18, 42, height, width] + block
+      bytes += [18, 42, height, width] + block
     end
 
     bytes
