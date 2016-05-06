@@ -1,5 +1,5 @@
 class Bitmap
-  attr_reader :width, :height
+  attr_reader :width
 
   class << self
     def from_source(source)
@@ -34,11 +34,11 @@ class Bitmap
 
   def each_chunk
     width_in_bytes = width / 8
-    number_of_chunks = (height / 255) + 1
+    number_of_chunks = (@height / 255) + 1
 
     number_of_chunks.times do |chunk_number|
       chunk_height_offset = chunk_number * 255
-      chunk_height = [height - chunk_height_offset, 255].min
+      chunk_height = [@height - chunk_height_offset, 255].min
       yield chunk_height, width_in_bytes, @data.get_bytes(width_in_bytes * chunk_height)
     end
   end
