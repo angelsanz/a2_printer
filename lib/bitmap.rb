@@ -23,7 +23,7 @@ class Bitmap
   def to_bytes
     bytes = []
     each_chunk do |height, width, chunk|
-      bytes += [18, 42, height, width] + chunk
+      bytes += CHUNK_HEADER + [height, width] + chunk
     end
 
     bytes
@@ -49,8 +49,9 @@ class Bitmap
     width / 8
   end
 
+  CHUNK_HEADER = [18, 42]
   MAXIMUM_CHUNK_HEIGHT = 255
-  private_constant :MAXIMUM_CHUNK_HEIGHT
+  private_constant :MAXIMUM_CHUNK_HEIGHT, :CHUNK_HEADER
 end
 
 class BitmapData
