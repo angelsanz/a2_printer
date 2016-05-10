@@ -34,20 +34,23 @@ class Bitmap
 
   def each_chunk
     number_of_chunks.times do |chunk_number|
-      height_offset = chunk_number * 255
-      chunk_height = [@height - height_offset, 255].min
+      height_offset = chunk_number * MAXIMUM_CHUNK_HEIGHT
+      chunk_height = [@height - height_offset, MAXIMUM_CHUNK_HEIGHT].min
 
       yield chunk_height, width_in_bytes, @data.get_bytes(width_in_bytes * chunk_height)
     end
   end
 
   def number_of_chunks
-    (@height / 255) + 1
+    (@height / MAXIMUM_CHUNK_HEIGHT) + 1
   end
 
   def width_in_bytes
     width / 8
   end
+
+  MAXIMUM_CHUNK_HEIGHT = 255
+  private_constant :MAXIMUM_CHUNK_HEIGHT
 end
 
 class BitmapData
