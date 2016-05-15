@@ -41,24 +41,30 @@ class BitmapData
     @height = height
   end
 
-  def each_chunk
-    number_of_chunks.times do |chunk_number|
-      height_offset = chunk_number * MAXIMUM_CHUNK_HEIGHT
-      chunk_height = [@height - height_offset, MAXIMUM_CHUNK_HEIGHT].min
 
+  def each_chunk
+    chunk_heights.each do |chunk_height|
       yield chunk_height, width_in_bytes, get_bytes(width_in_bytes * chunk_height)
     end
   end
 
   private
 
-  def ensure_is_queryable_for_bytes(source)
-    return source if source.respond_to?(:getbyte)
-    StringIO.new(source.map(&:chr).join)
+  def chunk_heights
+    (1..number_of_chunks - 1).map { MAXIMUM_CHUNK_HEIGHT } << height_of_last_chunk
   end
 
   def number_of_chunks
     Integer(@height / MAXIMUM_CHUNK_HEIGHT) + 1
+  end
+
+  def height_of_last_chunk
+    @height % MAXIMUM_CHUNK_HEIGHT
+  end
+
+  def ensure_is_queryable_for_bytes(source)
+    return source if source.respond_to?(:getbyte)
+    StringIO.new(source.map(&:chr).join)
   end
 
   def width_in_bytes
