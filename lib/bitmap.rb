@@ -16,12 +16,9 @@ class Bitmap
   end
 
   def to_bytes
-    bytes = []
-    @data.each_chunk do |height, width, chunk|
-      bytes += CHUNK_HEADER + [height, width] + chunk
+    @data.chunks.flat_map do |height, width, bytes|
+      CHUNK_HEADER + [height, width] + bytes
     end
-
-    bytes
   end
 
   def width
@@ -41,14 +38,17 @@ class BitmapData
     @height = height
   end
 
+  def chunks
+    to_enum(:each_chunk)
+  end
+
+  private
 
   def each_chunk
     chunk_heights.each do |chunk_height|
       yield chunk_height, width_in_bytes, get_bytes(width_in_bytes * chunk_height)
     end
   end
-
-  private
 
   def chunk_heights
     (1..number_of_chunks - 1).map { MAXIMUM_CHUNK_HEIGHT } << height_of_last_chunk
