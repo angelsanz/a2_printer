@@ -42,7 +42,7 @@ class Bitmap
   end
 
   def number_of_chunks
-    (@height / MAXIMUM_CHUNK_HEIGHT) + 1
+    Integer(@height / MAXIMUM_CHUNK_HEIGHT) + 1
   end
 
   def width_in_bytes
